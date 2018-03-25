@@ -1,6 +1,6 @@
 VARS_OLD := $(.VARIABLES)
-BIN_PATH := ../../bin
-CONFIG_PATH := ../../config
+BIN_PATH := bin
+CONFIG_PATH := config
 DOCKER_TEMPLATE := Dockerfile.tmpl
 # You have to define defaults to can compare in sed foreach!
 TAG := symfony
@@ -8,6 +8,8 @@ PHP_VERSION := 7
 
 define BUILD
 	mkdir -p builds/$(TARGET_PATH)
+	cp -R bin builds/$(TARGET_PATH)
+	cp -R config builds/$(TARGET_PATH)
 	cp $(DOCKER_TEMPLATE) builds/$(TARGET_PATH)/Dockerfile
 	sed $(foreach v, $(filter-out $(VARS_OLD) VARS_OLD,$(.VARIABLES)), -e "s#{{ $(v) }}#$($(v))#") -i builds/$(TARGET_PATH)/Dockerfile
 endef

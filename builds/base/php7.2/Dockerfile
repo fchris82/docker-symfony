@@ -11,7 +11,7 @@ RUN apt-get clean && apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # PHP
-COPY ../../config/php_requires.txt /tmp/php_requires
+COPY config/php_requires.txt /tmp/php_requires
 
 RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "\n" " "` \
     && pecl install xdebug && docker-php-ext-enable xdebug \
@@ -27,16 +27,16 @@ RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "
     && mv composer.phar /usr/local/bin/composer \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ../../config/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
-COPY ../../config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
+COPY config/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
+COPY config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
 
 # XDEBUG!
 EXPOSE 9000
 # PHP-FPM
 EXPOSE 9003
 
-COPY ../../bin/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY ../../bin/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY bin/wait-for-it.sh /usr/local/bin/wait-for-it.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 VOLUME /var/www
