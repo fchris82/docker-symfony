@@ -37,6 +37,7 @@ base-php72: TAG := symfony-php7.2
 base-php72: PHP_VERSION := 7.2
 base-php72:
 	$(BUILD)
+	sed -e "s#mcrypt##" -i builds/$(TARGET_PATH)/config/php_requires.txt
 
 .PHONY: ez1
 ez1: TARGET_PATH := ez/1
@@ -51,3 +52,4 @@ ez2: TAG := ez2
 ez2: PHP_VERSION := 7.2
 ez2:
 	$(BUILD)
+	sed -e "s#mcrypt##" -i builds/$(TARGET_PATH)/config/php_requires.txt

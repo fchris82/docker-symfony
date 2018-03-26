@@ -2,7 +2,7 @@ FROM php:7.1-fpm
 
 RUN apt-get clean && apt-get update \
     && apt-get install -y locales wget curl software-properties-common ssh build-essential curl git unzip gettext-base \
-        libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng12-dev libmagickwand-dev \
+        libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng-dev libmagickwand-dev \
     && mkdir -p /home/user/.ssh \
     && mkdir -p /run/php \
     && usermod -d /home/user www-data \
