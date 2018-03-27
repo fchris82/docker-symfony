@@ -20,9 +20,9 @@ Abilities:
 | `CI` | `0` or `1` | You can notify the container, it is running in CI test. Then it don't load the fpm. |
 | `PHP_MAX_EXECUTION_TIME` | `30` | php.ini: `max_execution_time` in seconds |
 | `PHP_MEMORY_LIMIT` | `128M` | php.ini: `memory_limit` |
-| `PHP_MAX_UPLOAD` | `50M` | php.ini: `upload_max_filesize` |
+| `PHP_UPLOAD_MAX_FILESIZE` | `50M` | php.ini: `upload_max_filesize` |
 | `PHP_MAX_FILE_UPLOADS` | `20` | php.ini: `max_file_uploads` |
-| `PHP_MAX_POST` | `100M` | php.ini: `post_max_size` |
+| `PHP_MAX_POST_SIZE` | `100M` | php.ini: `post_max_size` |
  
 ## Suggested volumes
 
@@ -52,9 +52,9 @@ services:
             # PHP config
             - PHP_MAX_EXECUTION_TIME
             - PHP_MEMORY_LIMIT
-            - PHP_MAX_UPLOAD
+            - PHP_UPLOAD_MAX_FILESIZE
             - PHP_MAX_FILE_UPLOADS
-            - PHP_MAX_POST
+            - PHP_MAX_POST_SIZE
             # Symfony parameters
             - SYMFONY_ENV
             - SYMFONY_DEBUG

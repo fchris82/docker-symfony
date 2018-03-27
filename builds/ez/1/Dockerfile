@@ -27,6 +27,14 @@ RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "
     && mv composer.phar /usr/local/bin/composer \
     && rm -rf /var/lib/apt/lists/*
 
+# EZ extra
+RUN \
+    apt-get update && \
+    apt-get install libxslt-dev -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    docker-php-ext-install exif && \
+    docker-php-ext-install xsl
+
 COPY config/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
 COPY config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
 
