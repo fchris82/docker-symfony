@@ -16,7 +16,6 @@ function init {
 
     # CREATE USER
     USER_ID=${LOCAL_USER_ID:-9001}
-    useradd -u $USER_ID ${LOCAL_USER_NAME:-www-data} -G docker
     export HOME=${LOCAL_HOME}
 
     if [[ $(id -u) == 0 ]]; then
