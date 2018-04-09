@@ -22,7 +22,7 @@ Abilities:
 | `PHP_MEMORY_LIMIT` | `128M` | php.ini: `memory_limit` |
 | `PHP_UPLOAD_MAX_FILESIZE` | `50M` | php.ini: `upload_max_filesize` |
 | `PHP_MAX_FILE_UPLOADS` | `20` | php.ini: `max_file_uploads` |
-| `PHP_MAX_POST_SIZE` | `100M` | php.ini: `post_max_size` |
+| `PHP_POST_MAX_SIZE` | `100M` | php.ini: `post_max_size` |
  
 ## Suggested volumes
 
@@ -54,7 +54,7 @@ services:
             - PHP_MEMORY_LIMIT
             - PHP_UPLOAD_MAX_FILESIZE
             - PHP_MAX_FILE_UPLOADS
-            - PHP_MAX_POST_SIZE
+            - PHP_POST_MAX_SIZE
             # Symfony parameters
             - SYMFONY_ENV
             - SYMFONY_DEBUG
