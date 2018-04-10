@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [ ${DEBUG:-0} -ge 1 ]; then
+    [[ -f /.dockerenv ]] && echo -e "\033[1mDocker: \033[33m${WF_DOCKER_HOST_CHAIN}\033[0m"
+    echo -e "\033[1mDEBUG\033[33m $(realpath "$0")\033[0m"
+    SYMFONY_COMMAND_DEBUG="-vvv"
+    DOCKER_DEBUG="-e DEBUG=${DEBUG}"
+fi
+[[ ${DEBUG:-0} -ge 2 ]] && set -x
+
 CHECKFILE="/home/.system.ready"
 
 read -r -d '' HELP <<-EOM
@@ -10,13 +18,14 @@ Initialize script:
 
 EOM
 
-
 function init {
     rm -rf $CHECKFILE
 
     # CREATE USER
     USER_ID=${LOCAL_USER_ID:-9001}
-    export HOME=${LOCAL_HOME}
+    export HOME=${LOCAL_USER_HOME}
+
+    LOCALE=${LOCALE:-en_US}
 
     if [[ $(id -u) == 0 ]]; then
         # Timezone
@@ -61,7 +70,11 @@ function init {
     fi
 
     # START BASH
-    ${@:-php -a}
+    if [ -z ${DOCKER_USER} ]; then
+        ${@:-php -a}
+    else
+        gosu ${DOCKER_USER} "$CMD"
+    fi
 }
 
 function waitingForStart {
