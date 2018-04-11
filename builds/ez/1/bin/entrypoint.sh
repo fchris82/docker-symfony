@@ -70,10 +70,10 @@ function init {
     fi
 
     # START BASH
-    if [ -z ${DOCKER_USER} ]; then
+    if [ -z ${DOCKER_USER} ] || [ -z ${@} ]; then
         ${@:-php -a}
     else
-        gosu ${DOCKER_USER} "$CMD"
+        gosu ${DOCKER_USER} "${@}"
     fi
 }
 

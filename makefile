@@ -6,6 +6,7 @@ DOCKER_TEMPLATE := Dockerfile.tmpl
 TAG := symfony
 PHP_VERSION := 7
 CUSTOM_CONFIGS :=
+XDEBUG_POSTFIX :=
 
 define BUILD
 	mkdir -p builds/$(TARGET_PATH)/config
@@ -19,13 +20,23 @@ define BUILD
 endef
 
 .PHONY: all
-all: base-php70 base-php71 base-php72 ez1 ez2
+all: base-php56 base-php70 base-php71 base-php72 ez1 ez2
+
+.PHONY: base-php56
+base-php56: TARGET_PATH := base/php5.6
+base-php56: TAG := php5.6
+base-php56: PHP_VERSION := 5.6
+base-php56: CUSTOM_CONFIGS :=
+base-php56: XDEBUG_POSTFIX := "-2.5.5"
+base-php56:
+	$(BUILD)
 
 .PHONY: base-php70
 base-php70: TARGET_PATH := base/php7.0
 base-php70: TAG := php7.0
 base-php70: PHP_VERSION := 7.0
 base-php70: CUSTOM_CONFIGS :=
+base-php70: XDEBUG_POSTFIX :=
 base-php70:
 	$(BUILD)
 
@@ -34,6 +45,7 @@ base-php71: TARGET_PATH := base/php7.1
 base-php71: TAG := php7.1
 base-php71: PHP_VERSION := 7.1
 base-php71: CUSTOM_CONFIGS :=
+base-php71: XDEBUG_POSTFIX :=
 base-php71:
 	$(BUILD)
 
@@ -42,6 +54,7 @@ base-php72: TARGET_PATH := base/php7.2
 base-php72: TAG := php7.2
 base-php72: PHP_VERSION := 7.2
 base-php72: CUSTOM_CONFIGS := php7.2
+base-php72: XDEBUG_POSTFIX :=
 base-php72:
 	$(BUILD)
 
@@ -50,6 +63,7 @@ ez1: TARGET_PATH := ez/1
 ez1: TAG := ez1
 ez1: PHP_VERSION := 7.1
 ez1: CUSTOM_CONFIGS := ez1
+ez1: XDEBUG_POSTFIX :=
 ez1:
 	$(BUILD)
 
@@ -58,5 +72,6 @@ ez2: TARGET_PATH := ez/2
 ez2: TAG := ez2
 ez2: PHP_VERSION := 7.2
 ez2: CUSTOM_CONFIGS := php7.2 ez1
+ez2: XDEBUG_POSTFIX :=
 ez2:
 	$(BUILD)

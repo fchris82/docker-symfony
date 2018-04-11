@@ -1,4 +1,4 @@
-FROM php:{{ PHP_VERSION }}-fpm
+FROM php:5.6-fpm
 
 RUN apt-get clean && apt-get update \
     && apt-get install -y locales wget curl software-properties-common ssh build-essential curl git unzip gettext-base \
@@ -28,10 +28,10 @@ RUN set -ex; \
     gosu nobody true
 
 # PHP
-COPY {{ CONFIG_PATH }}/php_requires.txt /tmp/php_requires
+COPY config/php_requires.txt /tmp/php_requires
 
 RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "\n" " "` \
-    && pecl install xdebug{{ XDEBUG_POSTFIX }} && docker-php-ext-enable xdebug \
+    && pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug \
     && pecl install imagick && docker-php-ext-enable imagick \
     && sed -e 's#error_log = .*#error_log = /var/log/php-fpm.log#' -i /usr/local/etc/php-fpm.conf \
     && sed -e 's/listen = .*/listen = \[::\]:9003/' -i /usr/local/etc/php-fpm.d/zz-docker.conf \
@@ -44,16 +44,16 @@ RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "
     && mv composer.phar /usr/local/bin/composer \
     && rm -rf /var/lib/apt/lists/*
 
-COPY {{ CONFIG_PATH }}/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
-COPY {{ CONFIG_PATH }}/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
+COPY config/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
+COPY config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
 
 # XDEBUG!
 EXPOSE 9000
 # PHP-FPM
 EXPOSE 9003
 
-COPY {{ BIN_PATH }}/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY {{ BIN_PATH }}/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY bin/wait-for-it.sh /usr/local/bin/wait-for-it.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 VOLUME /var/www
