@@ -25,6 +25,7 @@ RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "
     && sed -e 's#;php_admin_value[error_log] = .*#php_admin_value[error_log] = /var/log/php/www.log#' -i /usr/local/etc/php-fpm.d/www.conf \
     && curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
+    && composer global require hirak/prestissimo \
     && rm -rf /var/lib/apt/lists/*
 
 # EZ extra
