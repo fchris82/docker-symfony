@@ -71,7 +71,8 @@ function init {
     fi
 
     # START BASH
-    if [ -z ${DOCKER_USER} ] || [ -z "${@}" ]; then
+    # merge array parameters: (composer install -n) --> composerinstall-n
+    if [ -z ${DOCKER_USER} ] || [ -z "$(printf "%s" ${@})" ]; then
         ${@:-php -a}
     else
         gosu ${DOCKER_USER} "${@}"
