@@ -90,15 +90,15 @@ function waitingForStart {
 
 case $1 in
     -h|--help)
-    echo -e "${HELP}"
-    exit 1
+        echo -e "${HELP}"
+        exit 1
     ;;
     # Wait-for init
     -w|--wait-for-init)
-    waitingForStart
+        waitingForStart
     ;;
     # Init
     *)
-    init ${@}
+        init ${@}
     ;;
 esac
