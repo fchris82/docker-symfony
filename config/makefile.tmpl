@@ -1,3 +1,7 @@
 .PHONY: build
 build:
 	docker build --no-cache --tag fchris82/symfony:{{ TAG }} .
+
+.PHONY: enter
+enter:
+	docker run -it fchris82/symfony:{{ TAG }} /bin/bash
