@@ -6,11 +6,7 @@ RUN apt-get clean && apt-get update \
         gosu libmagickwand-dev \
     # verify that the binary works
     && gosu nobody true \
-    && mkdir -p /home/user/.ssh \
     && mkdir -p /run/php \
-    && usermod -d /home/user www-data \
-    && chown www-data /home/user \
-    && touch /home/user/.gitignore && git config --global core.excludesfile '/home/user/.gitignore' \
     && rm -rf /var/lib/apt/lists/*
 
 # PHP

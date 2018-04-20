@@ -3,11 +3,7 @@ FROM php:{{ PHP_VERSION }}-fpm
 RUN apt-get clean && apt-get update \
     && apt-get install -y locales wget curl software-properties-common ssh build-essential curl git unzip gettext-base \
         libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng-dev libmagickwand-dev \
-    && mkdir -p /home/user/.ssh \
     && mkdir -p /run/php \
-    && usermod -d /home/user www-data \
-    && chown www-data /home/user \
-    && touch /home/user/.gitignore && git config --global core.excludesfile '/home/user/.gitignore' \
     && rm -rf /var/lib/apt/lists/*
 
 ENV GOSU_VERSION 1.10
