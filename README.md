@@ -15,7 +15,8 @@ Abilities:
 | `WWW_DATA_GID` | `1001` | The current user group id |
 | `TIMEZONE` | `Europe/Budapest` | The timezne what you want to use |
 | `LOCALE` | `hu_HU` | The locale value what you want to use |
-| `XDEBUG_ENABLED` | `0` or `1` | You can switch on or off the xdebug |
+| `XDEBUG_ENABLED` | `0` or `1` | You can switch on or off the xdebug (default: `0`) |
+| `ERROR_LOG_ENABLED` | `0` or `1` | You can switch on or off PHP error log (default: `1`) |
 | `PHP_IDE_CONFIG` | `"serverName=Docker"` | The xdebug server config name |
 | `CI` | `0` or `1` | You can notify the container, it is running in CI test. Then it don't load the fpm. |
 | `PHP_MAX_EXECUTION_TIME` | `30` | php.ini: `max_execution_time` in seconds |

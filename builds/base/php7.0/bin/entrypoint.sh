@@ -55,6 +55,9 @@ function init {
                 sed -i "s/\(xdebug.remote_host *= *\).*/\\1${HOST_IP}/" $(dirname $file)/xdebug.ini
             done
         fi
+        if [[ $ERROR_LOG_ENABLED != 0 ]]; then
+            cp /usr/local/etc/php/conf.d/90-log.ini.dist /usr/local/etc/php/conf.d/90-log.ini
+        fi
 
         # The FPM can't use the environment variables for config, so we replace them here
         envsubst < /usr/local/etc/php/conf.d/99-custom.ini.dist > /usr/local/etc/php/conf.d/99-custom.ini

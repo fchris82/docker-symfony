@@ -42,6 +42,7 @@ RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "
     && rm -rf /var/lib/apt/lists/*
 
 COPY config/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
+COPY config/log.php.ini /usr/local/etc/php/conf.d/90-log.ini.dist
 COPY config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
 
 # XDEBUG!
