@@ -63,11 +63,10 @@ function init {
         envsubst < /usr/local/etc/php/conf.d/99-custom.ini.dist > /usr/local/etc/php/conf.d/99-custom.ini
 
         # PHP-FPM start
-        if [[ $CI != 1 && $CI != 'true' ]]; then
+        if [[ $CI != 1 && $CI != 'true' && $DOCKER_RUN != '1' ]]; then
             # Symfony envs. Some PHP-FPM doesn't support the empty value (like 5.6), so this grep find only not empty values!
             env | grep ^SYMFONY.*[^=]$ | awk '{split($0,a,"="); print "env[" a[1] "]=" a[2]}' >> /usr/local/etc/php-fpm.d/www.conf
-            php-fpm &
-            echo "PHP-FPM started: service php-fpm start"
+            php-fpm && echo "PHP-FPM started: service php-fpm start"
         fi
 
         touch $CHECKFILE
