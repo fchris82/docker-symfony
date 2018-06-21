@@ -7,6 +7,27 @@ Abilities:
 - switch on and off the xdebug
 - PHP configuration from ENV
 
+## How to use
+
+You need to edit files outside `builds` directory. In files in the `builds`
+directory are generated, you mustn't edit it directly!
+
+The templates are in the `config` directory.
+
+### Generate files
+
+    make -s all
+
+### Build and push
+
+    make -s build-all
+
+This script will build doctrine image and push to hub. It will run long.
+
+### Build only one
+
+Go to conrate build directory and run `make -s build` command.
+
 ## Environment variables
 
 | Name | E.g. value | Description |

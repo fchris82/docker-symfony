@@ -22,6 +22,10 @@ endef
 .PHONY: all
 all: base-php56 base-php70 base-php71 base-php72 ez1 ez2
 
+.PHONY: build-all
+build-all:
+	find builds -type f -name makefile -execdir sh -c "make build-full" \;
+
 .PHONY: base-php56
 base-php56: TARGET_PATH := base/php5.6
 base-php56: TAG := php5.6

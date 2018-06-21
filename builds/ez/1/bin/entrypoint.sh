@@ -39,7 +39,16 @@ function init {
         chgrp www-data /usr/local/etc/php/conf.d
 
         echo "Starting with UID : $USER_ID"
-        usermod -u $USER_ID --home ${LOCAL_USER_HOME} www-data
+        # Bugfix
+        #
+        # If you try to change the user ID and the home directory together (in 1 command:
+        # `usermod -d ${LOCAL_USER_HOME} -u $USER_ID www-data`), the usermod will run a "chown" for all the files, and
+        # it is very-very slow. The solution: we change the user ID and the home directory separately. The critic operation
+        # is the ID change. We use an empty directory.
+        mkdir -p /tmp/home/www-data
+        usermod -d /tmp/home/www-data www-data
+        usermod -u $USER_ID www-data
+        usermod -d ${LOCAL_USER_HOME} www-data
         groupmod -g $WWW_DATA_GID www-data
 
         if [[ $XDEBUG_ENABLED != 1 ]]; then
@@ -62,11 +71,13 @@ function init {
         # The FPM can't use the environment variables for config, so we replace them here
         envsubst < /usr/local/etc/php/conf.d/99-custom.ini.dist > /usr/local/etc/php/conf.d/99-custom.ini
 
-        # PHP-FPM start
+        # PHP-FPM start. We don't run it when the script is running in CI, or we are running a "run" command instead of "exec"
         if [[ $CI != 1 && $CI != 'true' && $DOCKER_RUN != 1 ]]; then
             # Symfony envs. Some PHP-FPM doesn't support the empty value (like 5.6), so this grep find only not empty values!
             env | grep ^SYMFONY.*[^=]$ | awk '{split($0,a,"="); print "env[" a[1] "]=" a[2]}' >> /usr/local/etc/php-fpm.d/www.conf
-            php-fpm && echo "PHP-FPM started: service php-fpm start"
+            # Run php-fpm in background
+            php-fpm &
+            echo "PHP-FPM started: service php-fpm start"
         fi
 
         touch $CHECKFILE
