@@ -2,7 +2,10 @@ FROM php:7.2-fpm
 
 RUN apt-get clean && apt-get update \
     && apt-get install -y locales wget curl software-properties-common ssh build-essential curl git unzip gettext-base \
-        libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng-dev libmagickwand-dev \
+        libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng-dev \
+        gosu libmagickwand-dev \
+    # verify that the binary works
+    && gosu nobody true \
     && mkdir -p /run/php \
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,6 +36,7 @@ RUN \
     docker-php-ext-install xsl
 
 COPY config/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
+COPY config/log.php.ini /usr/local/etc/php/conf.d/90-log.ini.dist
 COPY config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
 
 # XDEBUG!

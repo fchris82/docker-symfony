@@ -6,11 +6,28 @@ RUN apt-get clean && apt-get update \
     && mkdir -p /run/php \
     && rm -rf /var/lib/apt/lists/*
 
+ENV GOSU_VERSION 1.10
+RUN set -ex; \
+    \
+    dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+    wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+    wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+    \
+# verify the signature
+    export GNUPGHOME="$(mktemp -d)"; \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
+    rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
+    \
+    chmod +x /usr/local/bin/gosu; \
+# verify that the binary works
+    gosu nobody true
+
 # PHP
 COPY {{ CONFIG_PATH }}/php_requires.txt /tmp/php_requires
 
 RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "\n" " "` \
-    && pecl install xdebug && docker-php-ext-enable xdebug \
+    && pecl install xdebug{{ XDEBUG_POSTFIX }} && docker-php-ext-enable xdebug \
     && pecl install imagick && docker-php-ext-enable imagick \
     && sed -e 's#error_log = .*#error_log = /var/log/php-fpm.log#' -i /usr/local/etc/php-fpm.conf \
     && sed -e 's/listen = .*/listen = \[::\]:9003/' -i /usr/local/etc/php-fpm.d/zz-docker.conf \
@@ -33,6 +50,7 @@ RUN \
     docker-php-ext-install xsl
 
 COPY {{ CONFIG_PATH }}/custom.php.ini /usr/local/etc/php/conf.d/99-custom.ini.dist
+COPY {{ CONFIG_PATH }}/log.php.ini /usr/local/etc/php/conf.d/90-log.ini.dist
 COPY {{ CONFIG_PATH }}/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.dist
 
 # XDEBUG!
