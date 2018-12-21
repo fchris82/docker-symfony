@@ -20,7 +20,7 @@ define BUILD
 endef
 
 .PHONY: all
-all: base-php56 base-php70 base-php71 base-php72 ez1 ez2
+all: base-php56 base-php70 base-php71 base-php72 base-php73 ez1 ez2
 
 .PHONY: build-all
 build-all:
@@ -60,6 +60,15 @@ base-php72: PHP_VERSION := 7.2
 base-php72: CUSTOM_CONFIGS := php7.2
 base-php72: XDEBUG_POSTFIX :=
 base-php72:
+	$(BUILD)
+
+.PHONY: base-php73
+base-php73: TARGET_PATH := base/php7.3
+base-php73: TAG := php7.3
+base-php73: PHP_VERSION := 7.3
+base-php73: CUSTOM_CONFIGS := php7.2
+base-php73: XDEBUG_POSTFIX := -beta
+base-php73:
 	$(BUILD)
 
 .PHONY: ez1

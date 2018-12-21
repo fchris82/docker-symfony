@@ -1,0 +1,7 @@
+pdo_mysql
+intl
+curl
+xml
+zip
+gd
+mbstring
