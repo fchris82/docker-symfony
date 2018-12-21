@@ -67,6 +67,7 @@ base-php73: TARGET_PATH := base/php7.3
 base-php73: TAG := php7.3
 base-php73: PHP_VERSION := 7.3
 base-php73: CUSTOM_CONFIGS := php7.2
+# @todo Ezt majd el kell távolítani, hogy ne beta-t használjon
 base-php73: XDEBUG_POSTFIX := -beta
 base-php73:
 	$(BUILD)
