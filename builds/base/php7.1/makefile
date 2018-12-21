@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	docker build --no-cache --tag fchris82/symfony:php7.1 .
+	docker build --no-cache --pull --tag fchris82/symfony:php7.1 .
 
 .PHONY: push
 push:
