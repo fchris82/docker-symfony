@@ -19,7 +19,8 @@ RUN set -ex; \
     gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
     rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
     \
-    chmod +x /usr/local/bin/gosu; \
+    # Fix docker run permission problem + make to runnable
+    chmod +sx /usr/local/bin/gosu; \
 # verify that the binary works
     gosu nobody true
 
