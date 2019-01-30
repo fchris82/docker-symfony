@@ -1,12 +1,13 @@
 #!/bin/bash
 
-if [ ${DEBUG:-0} -ge 1 ]; then
+DEBUG=${DEBUG:-${WF_DEBUG:-0}}
+if [ ${DEBUG} -ge 1 ]; then
     [[ -f /.dockerenv ]] && echo -e "\033[1mDocker: \033[33m${WF_DOCKER_HOST_CHAIN}\033[0m"
     echo -e "\033[1mDEBUG\033[33m $(realpath "$0")\033[0m"
     SYMFONY_COMMAND_DEBUG="-vvv"
     DOCKER_DEBUG="-e DEBUG=${DEBUG}"
 fi
-[[ ${DEBUG:-0} -ge 2 ]] && set -x
+[[ ${DEBUG} -ge 2 ]] && set -x
 
 CHECKFILE="/home/.system.ready"
 
@@ -84,10 +85,10 @@ function init {
     fi
 
     # START BASH
-    # merge array parameters: (composer install -n) --> composerinstall-n
+    # printf: merge array parameters: (composer install -n) --> composerinstall-n
     if [ -z ${DOCKER_USER} ] || [ -z "$(printf "%s" ${@})" ]; then
-        echo "Start bash: ${@:-php -a}"
-        ${@:-php -a}
+        echo "Start bash: ${@:-tail -f /dev/null}"
+        ${@:-tail -f /dev/null}
     else
         echo "Start bash: gosu ${DOCKER_USER} ${@}"
         gosu ${DOCKER_USER} "${@}"
