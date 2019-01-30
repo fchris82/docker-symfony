@@ -3,7 +3,7 @@ FROM php:7.2-fpm
 RUN apt-get clean && apt-get update \
     && apt-get install -y locales wget curl software-properties-common ssh build-essential curl git unzip gettext-base \
         libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng-dev \
-        gosu libmagickwand-dev iproute2 \
+        gosu libmagickwand-dev iproute2 libzip-dev \
     # Fix docker run permission problem
     && chmod +s /usr/sbin/gosu \
     # verify that the binary works

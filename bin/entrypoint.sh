@@ -86,8 +86,10 @@ function init {
     # START BASH
     # merge array parameters: (composer install -n) --> composerinstall-n
     if [ -z ${DOCKER_USER} ] || [ -z "$(printf "%s" ${@})" ]; then
+        echo "Start bash: ${@:-php -a}"
         ${@:-php -a}
     else
+        echo "Start bash: gosu ${DOCKER_USER} ${@}"
         gosu ${DOCKER_USER} "${@}"
     fi
 }

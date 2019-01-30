@@ -2,27 +2,14 @@ FROM php:7.0-fpm
 
 RUN apt-get clean && apt-get update \
     && apt-get install -y locales wget curl software-properties-common ssh build-essential curl git unzip gettext-base \
-        libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng-dev libmagickwand-dev \
+        libmcrypt-dev libicu-dev libxslt-dev libxml2-dev libglib2.0-bin libcurl4-gnutls-dev libjpeg62-turbo-dev libpng-dev \
+        gosu libmagickwand-dev iproute2 libzip-dev \
+    # Fix docker run permission problem
+    && chmod +s /usr/sbin/gosu \
+    # verify that the binary works
+    && gosu nobody true \
     && mkdir -p /run/php \
     && rm -rf /var/lib/apt/lists/*
-
-ENV GOSU_VERSION 1.10
-RUN set -ex; \
-    \
-    dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-    wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-    wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
-    \
-# verify the signature
-    export GNUPGHOME="$(mktemp -d)"; \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
-    rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
-    \
-    # Fix docker run permission problem + make to runnable
-    chmod +sx /usr/local/bin/gosu; \
-# verify that the binary works
-    gosu nobody true
 
 # PHP
 COPY config/php_requires.txt /tmp/php_requires

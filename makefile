@@ -76,7 +76,7 @@ base-php73:
 ez1: TARGET_PATH := ez/1
 ez1: TAG := ez1
 ez1: PHP_VERSION := 7.1
-ez1: CUSTOM_CONFIGS := ez1
+ez1: CUSTOM_CONFIGS := ez
 ez1: XDEBUG_POSTFIX :=
 ez1:
 	$(BUILD)
@@ -85,7 +85,7 @@ ez1:
 ez2: TARGET_PATH := ez/2
 ez2: TAG := ez2
 ez2: PHP_VERSION := 7.2
-ez2: CUSTOM_CONFIGS := php7.2 ez2
+ez2: CUSTOM_CONFIGS := php7.2 ez
 ez2: XDEBUG_POSTFIX :=
 ez2:
 	$(BUILD)
