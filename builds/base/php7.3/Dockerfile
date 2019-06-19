@@ -14,8 +14,12 @@ RUN apt-get clean && apt-get update \
 # PHP
 COPY config/php_requires.txt /tmp/php_requires
 
+RUN docker-php-ext-configure gd \
+    --with-freetype-dir=/usr/include/ \
+    --with-jpeg-dir=/usr/include/
+
 RUN docker-php-ext-install -j$(nproc) `grep -vE "^\s*#" /tmp/php_requires | tr "\n" " "` \
-    && pecl install xdebug-beta && docker-php-ext-enable xdebug \
+    && pecl install xdebug && docker-php-ext-enable xdebug \
     && pecl install imagick && docker-php-ext-enable imagick \
     && sed -e 's#error_log = .*#error_log = /var/log/php-fpm.log#' -i /usr/local/etc/php-fpm.conf \
     && sed -e 's/listen = .*/listen = \[::\]:9003/' -i /usr/local/etc/php-fpm.d/zz-docker.conf \
